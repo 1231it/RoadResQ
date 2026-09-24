@@ -1,14 +1,22 @@
 from flask import Flask
+from models import db
 
 app = Flask(__name__)
+
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///roadresq.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db.init_app(app)
+
+with app.app_context():
+    db.create_all()
 
 
 @app.route("/")
 def home():
     return """
     <h1>RoadResQ</h1>
-    <p>Smart Local Help & Emergency Assistance Platform</p>
-    <p>Server is running successfully!</p>
+    <p>Database connected successfully!</p>
     """
 
 
