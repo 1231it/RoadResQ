@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RoadResQ - Login</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 450px;
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.10);
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 28px;
+        }
+
+        .role-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .roles {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .role-option {
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 14px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .role-option:hover {
+            border-color: #2563eb;
+        }
+
+        .role-option.selected {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .role-option input {
+            display: none;
+        }
+
+        .role-icon {
+            font-size: 25px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 18px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 13px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .login-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 22px;
+            color: #6b7280;
+        }
+
+        .register-link a {
+            color: #2563eb;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        #message {
+            margin-top: 18px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        @media (max-width: 500px) {
+
+            .container {
+                width: 92%;
+                padding: 25px;
+            }
+
+            .roles {
+                grid-template-columns: 1fr;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="logo">
+            🚨 RoadResQ
+        </div>
+
+        <p class="subtitle">
+            Smart Local Help & Emergency Assistance
+        </p>
+
+
+        <div class="role-title">
+            Login as
+        </div>
+
+
+        <div class="roles">
+
+            <!-- CUSTOMER -->
+
+            <label class="role-option selected" id="customerRole">
+
+                <input
+                    type="radio"
+                    name="role"
+                    value="customer"
+                    checked
+                >
+
+                <span class="role-icon">👤</span>
+
+                Customer
+
+            </label>
+
+
+            <!-- PROVIDER -->
+
+            <label class="role-option" id="providerRole">
+
+                <input
+                    type="radio"
+                    name="role"
+                    value="provider"
+                >
+
+                <span class="role-icon">🛠️</span>
+
+                Provider
+
+            </label>
+
+
+            <!-- ADMIN -->
+
+            <label class="role-option" id="adminRole">
+
+                <input
+                    type="radio"
+                    name="role"
+                    value="admin"
+                >
+
+                <span class="role-icon">🛡️</span>
+
+                Admin
+
+            </label>
+
+        </div>
+
+
+        <form id="loginForm">
+
+            <label for="email">
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                required
+            >
+
+
+            <label for="password">
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter your password"
+                required
+            >
+
+
+            <button
+                type="submit"
+                class="login-btn"
+            >
+                Login
+            </button>
+
+        </form>
+
+
+        <div id="message"></div>
+
+
+        <div class="register-link">
+
+            Don't have an account?
+
+            <a href="/auth/register-page">
+                Create Account
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const roleOptions =
+            document.querySelectorAll(".role-option");
+
+
+        roleOptions.forEach(function(option) {
+
+            option.addEventListener("click", function() {
+
+                roleOptions.forEach(function(item) {
+
+                    item.classList.remove("selected");
+
+                });
+
+                option.classList.add("selected");
+
+                option.querySelector("input").checked = true;
+
+            });
+
+        });
+
+
+        const params =
+            new URLSearchParams(window.location.search);
+
+
+        if (params.get("registered") === "1") {
+
+            const message =
+                document.getElementById("message");
+
+            message.style.color = "green";
+
+            message.textContent =
+                "Account created successfully. Please login.";
+
+        }
+
+
+        document
+            .getElementById("loginForm")
+            .addEventListener("submit", async function(event) {
+
+                event.preventDefault();
+
+
+                const email =
+                    document
+                        .getElementById("email")
+                        .value
+                        .trim();
+
+
+                const password =
+                    document
+                        .getElementById("password")
+                        .value;
+
+
+                const role =
+                    document.querySelector(
+                        'input[name="role"]:checked'
+                    ).value;
+
+
+                const message =
+                    document.getElementById("message");
+
+
+                try {
+
+                    const response =
+                        await fetch("/auth/login", {
+
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+
+                                email: email,
+
+                                password: password,
+
+                                role: role
+
+                            })
+
+                        });
+
+
+                    const data =
+                        await response.json();
+
+
+                    if (response.ok) {
+
+                        message.style.color = "green";
+
+                        message.textContent =
+                            "Login successful!";
+
+
+                        setTimeout(function() {
+
+                            window.location.href =
+                                data.redirect_url;
+
+                        }, 500);
+
+                    }
+
+                    else {
+
+                        message.style.color = "red";
+
+                        message.textContent =
+                            data.message ||
+                            "Login failed.";
+
+                    }
+
+                }
+
+                catch (error) {
+
+                    message.style.color = "red";
+
+                    message.textContent =
+                        "Something went wrong.";
+
+                }
+
+            });
+
+    </script>
+
+</body>
+
+</html>

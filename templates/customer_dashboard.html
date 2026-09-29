@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>RoadResQ - Customer Dashboard</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logout {
+            color: white;
+            background: transparent;
+            padding: 9px 16px;
+            border: 1px solid #ffffff55;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .container {
+            width: 86%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .welcome {
+            margin-bottom: 30px;
+        }
+
+        .welcome h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #6b7280;
+            font-size: 17px;
+        }
+
+        .section-title {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(250px, 1fr)
+            );
+            gap: 22px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .icon {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            font-size: 21px;
+            margin-bottom: 8px;
+        }
+
+        .description {
+            color: #6b7280;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .services {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+
+        .services li {
+            margin-bottom: 7px;
+            color: #374151;
+        }
+
+        .request-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 11px 18px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .request-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .empty {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+
+        /* =====================================================
+           REQUEST HISTORY
+        ===================================================== */
+
+        .history-section {
+            margin-top: 45px;
+            background: white;
+            padding: 28px;
+            border-radius: 15px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        .history-header h2 {
+            font-size: 24px;
+        }
+
+        .history-header p {
+            margin-top: 6px;
+            color: #6b7280;
+        }
+
+        .refresh-btn {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .refresh-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .history-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            background: #fafafa;
+        }
+
+        .history-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .history-service {
+            font-size: 19px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .history-id {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .status-PENDING {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-ACCEPTED {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-IN_PROGRESS {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .status-COMPLETED {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-CANCELLED,
+        .status-REJECTED {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .history-problem {
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .history-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px 25px;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .history-details strong {
+            color: #111827;
+        }
+
+        .rating-box {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .rating-stars {
+            font-size: 18px;
+            margin-top: 5px;
+        }
+
+        .review-text {
+            margin-top: 6px;
+            color: #4b5563;
+            font-style: italic;
+        }
+
+        .no-history {
+            text-align: center;
+            padding: 35px 20px;
+            color: #6b7280;
+        }
+
+        .no-history-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .loading-history {
+            text-align: center;
+            padding: 25px;
+            color: #6b7280;
+        }
+
+        .history-error {
+            text-align: center;
+            padding: 25px;
+            color: #b91c1c;
+        }
+
+
+        @media (max-width: 700px) {
+
+            .history-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .history-details {
+                grid-template-columns: 1fr;
+            }
+
+            .history-top {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 16px 5%;
+            }
+
+            .container {
+                width: 92%;
+            }
+
+            .welcome h1 {
+                font-size: 26px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            🚨 RoadResQ
+        </div>
+
+        <form
+            action="/auth/logout"
+            method="POST"
+        >
+
+            <button
+                type="submit"
+                class="logout"
+            >
+                Logout
+            </button>
+
+        </form>
+
+    </nav>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="container">
+
+
+        <!-- WELCOME -->
+
+        <section class="welcome">
+
+            <h1>
+                Welcome to RoadResQ 👋
+            </h1>
+
+            <p>
+                Need help? Choose a service and get assistance
+                at your current location.
+            </p>
+
+        </section>
+
+
+        <!-- =================================================
+             SERVICE CATEGORIES
+        ================================================== -->
+
+        <h2 class="section-title">
+            What do you need help with?
+        </h2>
+
+
+        {% if categories %}
+
+            <div class="category-grid">
+
+                {% for category in categories %}
+
+                    <div class="card">
+
+
+                        <div class="icon">
+
+                            {% if category.name == "Vehicle Assistance" %}
+                                🚗
+
+                            {% elif category.name == "Food Assistance" %}
+                                🍔
+
+                            {% elif category.name == "Medical Assistance" %}
+                                💊
+
+                            {% elif category.name == "Home Services" %}
+                                🏠
+
+                            {% elif category.name == "Local Delivery" %}
+                                📦
+
+                            {% else %}
+                                🆘
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <h3>
+                            {{ category.name }}
+                        </h3>
+
+
+                        <p class="description">
+                            {{ category.description }}
+                        </p>
+
+
+                        {% if category.services %}
+
+                            <ul class="services">
+
+                                {% for service in category.services %}
+
+                                    {% if service.is_active %}
+
+                                        <li>
+                                            {{ service.name }}
+                                        </li>
+
+                                    {% endif %}
+
+                                {% endfor %}
+
+                            </ul>
+
+                        {% endif %}
+
+
+                        <a
+                            href="/customer/request-help?category_id={{ category.id }}"
+                            class="request-btn"
+                        >
+                            Request Help
+                        </a>
+
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+
+        {% else %}
+
+            <div class="empty">
+
+                <h3>
+                    No assistance categories available.
+                </h3>
+
+                <p>
+                    Please check again later.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             REQUEST HISTORY
+        ================================================== -->
+
+        <section class="history-section">
+
+            <div class="history-header">
+
+                <div>
+
+                    <h2>
+                        📋 My Request History
+                    </h2>
+
+                    <p>
+                        View all the assistance requests you have placed.
+                    </p>
+
+                </div>
+
+                <button
+                    class="refresh-btn"
+                    onclick="loadRequestHistory()"
+                >
+                    🔄 Refresh
+                </button>
+
+            </div>
+
+
+            <div id="historyContainer">
+
+                <div class="loading-history">
+                    Loading your request history...
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script>
+
+        async function loadRequestHistory() {
+
+            const container =
+                document.getElementById(
+                    "historyContainer"
+                );
+
+
+            container.innerHTML = `
+                <div class="loading-history">
+                    Loading your request history...
+                </div>
+            `;
+
+
+            try {
+
+                const response = await fetch(
+                    "/customer/history"
+                );
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    container.innerHTML = `
+                        <div class="history-error">
+                            Unable to load request history.
+                        </div>
+                    `;
+
+                    return;
+                }
+
+
+                const requests =
+                    data.requests || [];
+
+
+                /* ==========================================
+                   NO REQUESTS
+                ========================================== */
+
+                if (requests.length === 0) {
+
+                    container.innerHTML = `
+                        <div class="no-history">
+
+                            <div class="no-history-icon">
+                                📭
+                            </div>
+
+                            <h3>
+                                No requests yet
+                            </h3>
+
+                            <p>
+                                Your assistance requests
+                                will appear here.
+                            </p>
+
+                        </div>
+                    `;
+
+                    return;
+                }
+
+
+                /* ==========================================
+                   DISPLAY REQUESTS
+                ========================================== */
+
+                container.innerHTML =
+                    requests.map(
+                        function (item) {
+
+                            let providerHTML = "";
+
+
+                            if (item.provider) {
+
+                                providerHTML = `
+                                    <div>
+                                        <strong>Provider:</strong>
+                                        ${escapeHtml(item.provider)}
+                                    </div>
+
+                                    <div>
+                                        <strong>Phone:</strong>
+                                        ${escapeHtml(
+                                            item.phone ||
+                                            "Not available"
+                                        )}
+                                    </div>
+                                `;
+
+                            } else {
+
+                                providerHTML = `
+                                    <div>
+                                        <strong>Provider:</strong>
+                                        Not assigned
+                                    </div>
+                                `;
+                            }
+
+
+                            let ratingHTML = "";
+
+
+                            if (item.rating) {
+
+                                ratingHTML = `
+                                    <div class="rating-box">
+
+                                        <strong>
+                                            Your Rating:
+                                        </strong>
+
+                                        <div class="rating-stars">
+                                            ${
+                                                "⭐".repeat(
+                                                    item.rating
+                                                )
+                                            }
+                                        </div>
+
+                                        ${
+                                            item.review
+                                                ? `
+                                                    <div class="review-text">
+                                                        "${escapeHtml(
+                                                            item.review
+                                                        )}"
+                                                    </div>
+                                                  `
+                                                : ""
+                                        }
+
+                                    </div>
+                                `;
+
+                            }
+
+
+                            return `
+
+                                <div class="history-card">
+
+
+                                    <div class="history-top">
+
+                                        <div>
+
+                                            <div class="history-service">
+                                                ${escapeHtml(
+                                                    item.service
+                                                )}
+                                            </div>
+
+                                            <div class="history-id">
+                                                Request #${item.request_id}
+                                            </div>
+
+                                        </div>
+
+
+                                        <span
+                                            class="status status-${item.status}"
+                                        >
+                                            ${formatStatus(
+                                                item.status
+                                            )}
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="history-problem">
+
+                                        <strong>
+                                            Problem:
+                                        </strong>
+
+                                        ${escapeHtml(
+                                            item.description
+                                        )}
+
+                                    </div>
+
+
+                                    <div class="history-details">
+
+                                        ${providerHTML}
+
+
+                                        <div>
+
+                                            <strong>
+                                                Date:
+                                            </strong>
+
+                                            ${escapeHtml(
+                                                item.created_at ||
+                                                "Unknown"
+                                            )}
+
+                                        </div>
+
+
+                                        <div>
+
+                                            <strong>
+                                                Location:
+                                            </strong>
+
+                                            ${formatCoordinate(
+                                                item.latitude
+                                            )},
+                                            ${formatCoordinate(
+                                                item.longitude
+                                            )}
+
+                                        </div>
+
+                                    </div>
+
+
+                                    ${ratingHTML}
+
+
+                                </div>
+
+                            `;
+
+                        }
+                    ).join("");
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "History error:",
+                    error
+                );
+
+
+                container.innerHTML = `
+                    <div class="history-error">
+                        Unable to connect to the server.
+                    </div>
+                `;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           FORMAT STATUS
+        ====================================================== */
+
+        function formatStatus(status) {
+
+            return status
+                .replaceAll("_", " ")
+                .toLowerCase()
+                .replace(
+                    /\b\w/g,
+                    function(letter) {
+                        return letter.toUpperCase();
+                    }
+                );
+
+        }
+
+
+        /* =====================================================
+           FORMAT COORDINATES
+        ====================================================== */
+
+        function formatCoordinate(value) {
+
+            const number =
+                Number(value);
+
+            if (
+                Number.isNaN(number)
+            ) {
+                return "Unknown";
+            }
+
+            return number.toFixed(5);
+
+        }
+
+
+        /* =====================================================
+           ESCAPE HTML
+        ====================================================== */
+
+        function escapeHtml(value) {
+
+            const div =
+                document.createElement("div");
+
+            div.textContent =
+                value ?? "";
+
+            return div.innerHTML;
+
+        }
+
+
+        /* =====================================================
+           LOAD HISTORY WHEN DASHBOARD OPENS
+        ====================================================== */
+
+        loadRequestHistory();
+
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>RoadResQ - Admin Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        /* =====================================================
+           NAVBAR
+        ====================================================== */
+
+        .navbar {
+            background: #172554;
+            color: white;
+            padding: 18px 7%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .logout-btn:hover {
+            background: #b91c1c;
+        }
+
+
+        /* =====================================================
+           MAIN CONTAINER
+        ====================================================== */
+
+        .container {
+            width: 88%;
+            max-width: 1250px;
+            margin: 30px auto;
+        }
+
+        .header h1 {
+            color: #172554;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #64748b;
+        }
+
+
+        /* =====================================================
+           STATISTICS
+        ====================================================== */
+
+        .stats-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 18px;
+
+            margin-top: 25px;
+        }
+
+        .stat-card {
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 22px;
+
+            box-shadow:
+                0 5px 18px rgba(0, 0, 0, 0.07);
+        }
+
+        .stat-icon {
+            font-size: 28px;
+        }
+
+        .stat-title {
+            color: #64748b;
+            margin-top: 10px;
+        }
+
+        .stat-value {
+            font-size: 30px;
+            font-weight: bold;
+
+            color: #172554;
+
+            margin-top: 5px;
+        }
+
+
+        /* =====================================================
+           SECTION
+        ====================================================== */
+
+        .section {
+            background: white;
+
+            padding: 25px;
+
+            margin-top: 25px;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 5px 18px rgba(0, 0, 0, 0.07);
+        }
+
+        .section-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+        .section h2 {
+            margin: 0;
+
+            color: #172554;
+        }
+
+        .refresh-btn {
+            border: none;
+
+            background: #2563eb;
+
+            color: white;
+
+            padding: 9px 15px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+        }
+
+        .refresh-btn:hover {
+            background: #1d4ed8;
+        }
+
+
+        /* =====================================================
+           CHARTS
+        ====================================================== */
+
+        .charts {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 25px;
+        }
+
+        .chart-box {
+            min-height: 350px;
+        }
+
+
+        /* =====================================================
+           TABLES
+        ====================================================== */
+
+        .table-container {
+            width: 100%;
+
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+
+            border-bottom:
+                1px solid #e2e8f0;
+
+            text-align: left;
+        }
+
+        .data-table th {
+            background: #f8fafc;
+
+            color: #334155;
+        }
+
+        .data-table tr:hover {
+            background: #f8fafc;
+        }
+
+
+        /* =====================================================
+           STATUS
+        ====================================================== */
+
+        .status {
+            padding: 5px 9px;
+
+            border-radius: 15px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            white-space: nowrap;
+        }
+
+        .PENDING {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .ACCEPTED {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .IN_PROGRESS {
+            background: #ede9fe;
+            color: #6d28d9;
+        }
+
+        .COMPLETED {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .REJECTED,
+        .CANCELLED {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+
+        /* =====================================================
+           SYSTEM OVERVIEW
+        ====================================================== */
+
+        .overview-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+        }
+
+        .overview-card {
+            background: #f8fafc;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 12px;
+
+            padding: 20px;
+        }
+
+        .overview-card h3 {
+            margin-top: 0;
+
+            color: #172554;
+        }
+
+        .overview-number {
+            font-size: 28px;
+
+            font-weight: bold;
+
+            margin-top: 10px;
+        }
+
+        .overview-label {
+            color: #64748b;
+
+            margin-top: 5px;
+        }
+
+
+        /* =====================================================
+           EMPTY / LOADING
+        ====================================================== */
+
+        .empty {
+            text-align: center;
+
+            padding: 30px;
+
+            color: #64748b;
+        }
+
+        .loading {
+            text-align: center;
+
+            padding: 25px;
+
+            color: #64748b;
+        }
+
+        .error {
+            text-align: center;
+
+            padding: 25px;
+
+            color: #b91c1c;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 1000px) {
+
+            .stats-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .charts {
+                grid-template-columns: 1fr;
+            }
+
+            .overview-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .container {
+                width: 92%;
+            }
+
+            .navbar {
+                padding: 16px 5%;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .overview-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header {
+                align-items: flex-start;
+
+                gap: 12px;
+
+                flex-direction: column;
+            }
+
+            .data-table {
+                font-size: 13px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================== -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        🚨 RoadResQ Admin
+    </div>
+
+    <button
+        class="logout-btn"
+        onclick="logout()">
+
+        Logout
+
+    </button>
+
+</nav>
+
+
+<!-- =========================================================
+     MAIN
+========================================================== -->
+
+<div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>
+            Admin Dashboard
+        </h1>
+
+        <p>
+            Monitor RoadResQ users, providers and assistance requests.
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         STATISTICS CARDS
+    ====================================================== -->
+
+    <div class="stats-grid">
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                👥
+            </div>
+
+            <div class="stat-title">
+                Total Users
+            </div>
+
+            <div class="stat-value">
+                {{ total_users }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                👤
+            </div>
+
+            <div class="stat-title">
+                Customers
+            </div>
+
+            <div class="stat-value">
+                {{ total_customers }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                👨‍🔧
+            </div>
+
+            <div class="stat-title">
+                Service Providers
+            </div>
+
+            <div class="stat-value">
+                {{ total_providers }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                📋
+            </div>
+
+            <div class="stat-title">
+                Total Requests
+            </div>
+
+            <div class="stat-value">
+                {{ total_requests }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                ⏳
+            </div>
+
+            <div class="stat-title">
+                Pending
+            </div>
+
+            <div class="stat-value">
+                {{ pending_requests }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🔄
+            </div>
+
+            <div class="stat-title">
+                In Progress
+            </div>
+
+            <div class="stat-value">
+                {{ in_progress_requests }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                ✅
+            </div>
+
+            <div class="stat-title">
+                Completed
+            </div>
+
+            <div class="stat-value">
+                {{ completed_requests }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                🟢
+            </div>
+
+            <div class="stat-title">
+                Available Providers
+            </div>
+
+            <div class="stat-value">
+                {{ available_providers }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SYSTEM OVERVIEW
+    ====================================================== -->
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <h2>
+                📊 System Overview
+            </h2>
+
+        </div>
+
+
+        <div class="overview-grid">
+
+
+            <div class="overview-card">
+
+                <h3>
+                    🛠️ Services
+                </h3>
+
+                <div class="overview-number">
+                    {{ total_services }}
+                </div>
+
+                <div class="overview-label">
+                    Active services
+                </div>
+
+            </div>
+
+
+            <div class="overview-card">
+
+                <h3>
+                    📂 Categories
+                </h3>
+
+                <div class="overview-number">
+                    {{ total_categories }}
+                </div>
+
+                <div class="overview-label">
+                    Active categories
+                </div>
+
+            </div>
+
+
+            <div class="overview-card">
+
+                <h3>
+                    ⭐ Ratings
+                </h3>
+
+                <div class="overview-number">
+                    {{ total_ratings }}
+                </div>
+
+                <div class="overview-label">
+                    Customer ratings
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         CHARTS
+    ====================================================== -->
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <h2>
+                📊 Request & User Statistics
+            </h2>
+
+            <button
+                class="refresh-btn"
+                onclick="reloadCharts()">
+
+                🔄 Refresh
+
+            </button>
+
+        </div>
+
+
+        <div class="charts">
+
+
+            <div class="chart-box">
+
+                <canvas id="requestChart"></canvas>
+
+            </div>
+
+
+            <div class="chart-box">
+
+                <canvas id="userChart"></canvas>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         RECENT REQUESTS
+    ====================================================== -->
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <h2>
+                📋 Recent Requests
+            </h2>
+
+            <button
+                class="refresh-btn"
+                onclick="loadRequests()">
+
+                🔄 Refresh
+
+            </button>
+
+        </div>
+
+
+        <div id="requestsContainer">
+
+            <div class="loading">
+                Loading requests...
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         USERS
+    ====================================================== -->
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <h2>
+                👥 Registered Users
+            </h2>
+
+            <button
+                class="refresh-btn"
+                onclick="loadUsers()">
+
+                🔄 Refresh
+
+            </button>
+
+        </div>
+
+
+        <div id="usersContainer">
+
+            <div class="loading">
+                Loading users...
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PROVIDERS
+    ====================================================== -->
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <h2>
+                👨‍🔧 Service Providers
+            </h2>
+
+            <button
+                class="refresh-btn"
+                onclick="loadProviders()">
+
+                🔄 Refresh
+
+            </button>
+
+        </div>
+
+
+        <div id="providersContainer">
+
+            <div class="loading">
+                Loading providers...
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================== -->
+
+<script>
+
+
+let requestChart = null;
+let userChart = null;
+
+
+/* =========================================================
+   LOAD REQUESTS
+========================================================= */
+
+async function loadRequests() {
+
+    const container =
+        document.getElementById(
+            "requestsContainer"
+        );
+
+
+    container.innerHTML = `
+        <div class="loading">
+            Loading requests...
+        </div>
+    `;
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/admin/requests"
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.message ||
+                "Unable to load requests."
+            );
+
+        }
+
+
+        if (!data.length) {
+
+            container.innerHTML = `
+                <div class="empty">
+                    No requests found.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        let rows = "";
+
+
+        data.slice(0, 10).forEach(
+            function(item) {
+
+                rows += `
+
+                    <tr>
+
+                        <td>
+                            #${item.id}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                item.customer
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                item.service
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                item.provider
+                            )}
+                        </td>
+
+                        <td>
+
+                            <span
+                                class="status ${item.status}">
+
+                                ${formatStatus(
+                                    item.status
+                                )}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                item.created_at
+                            )}
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        );
+
+
+        container.innerHTML = `
+
+            <div class="table-container">
+
+                <table class="data-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                ID
+                            </th>
+
+                            <th>
+                                Customer
+                            </th>
+
+                            <th>
+                                Service
+                            </th>
+
+                            <th>
+                                Provider
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Created
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        ${rows}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        `;
+
+    }
+
+
+    catch(error) {
+
+        console.error(
+            "Request loading error:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="error">
+                ❌ ${escapeHtml(
+                    error.message
+                )}
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD USERS
+========================================================= */
+
+async function loadUsers() {
+
+    const container =
+        document.getElementById(
+            "usersContainer"
+        );
+
+
+    container.innerHTML = `
+        <div class="loading">
+            Loading users...
+        </div>
+    `;
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/admin/users"
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.message ||
+                "Unable to load users."
+            );
+
+        }
+
+
+        if (!data.length) {
+
+            container.innerHTML = `
+                <div class="empty">
+                    No users found.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        let rows = "";
+
+
+        data.slice(0, 15).forEach(
+            function(user) {
+
+                rows += `
+
+                    <tr>
+
+                        <td>
+                            #${user.id}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                user.name
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                user.email
+                            )}
+                        </td>
+
+                        <td>
+                            ${formatStatus(
+                                user.role
+                            )}
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        );
+
+
+        container.innerHTML = `
+
+            <div class="table-container">
+
+                <table class="data-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                ID
+                            </th>
+
+                            <th>
+                                Name
+                            </th>
+
+                            <th>
+                                Email
+                            </th>
+
+                            <th>
+                                Role
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        ${rows}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        `;
+
+    }
+
+
+    catch(error) {
+
+        console.error(
+            "User loading error:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="error">
+                ❌ ${escapeHtml(
+                    error.message
+                )}
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD PROVIDERS
+========================================================= */
+
+async function loadProviders() {
+
+    const container =
+        document.getElementById(
+            "providersContainer"
+        );
+
+
+    container.innerHTML = `
+        <div class="loading">
+            Loading providers...
+        </div>
+    `;
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/admin/providers"
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.message ||
+                "Unable to load providers."
+            );
+
+        }
+
+
+        if (!data.length) {
+
+            container.innerHTML = `
+                <div class="empty">
+                    No providers found.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        let rows = "";
+
+
+        data.slice(0, 15).forEach(
+            function(provider) {
+
+                rows += `
+
+                    <tr>
+
+                        <td>
+                            #${provider.id}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                provider.name
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                provider.email
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                provider.phone
+                            )}
+                        </td>
+
+                        <td>
+
+                            ${
+                                provider.available
+                                    ? "🟢 Available"
+                                    : "⚪ Offline"
+                            }
+
+                        </td>
+
+                        <td>
+                            ⭐ ${provider.rating}
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        );
+
+
+        container.innerHTML = `
+
+            <div class="table-container">
+
+                <table class="data-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                ID
+                            </th>
+
+                            <th>
+                                Name
+                            </th>
+
+                            <th>
+                                Email
+                            </th>
+
+                            <th>
+                                Phone
+                            </th>
+
+                            <th>
+                                Availability
+                            </th>
+
+                            <th>
+                                Rating
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        ${rows}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        `;
+
+    }
+
+
+    catch(error) {
+
+        console.error(
+            "Provider loading error:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="error">
+                ❌ ${escapeHtml(
+                    error.message
+                )}
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD CHARTS
+========================================================= */
+
+async function loadCharts() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/admin/statistics"
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.message ||
+                "Unable to load statistics."
+            );
+
+        }
+
+
+        const requestData =
+            data.requests;
+
+
+        /* =================================================
+           DESTROY OLD CHARTS
+        ================================================= */
+
+        if (requestChart) {
+
+            requestChart.destroy();
+
+        }
+
+        if (userChart) {
+
+            userChart.destroy();
+
+        }
+
+
+        /* =================================================
+           REQUEST CHART
+        ================================================= */
+
+        requestChart =
+            new Chart(
+
+                document.getElementById(
+                    "requestChart"
+                ),
+
+                {
+
+                    type: "doughnut",
+
+                    data: {
+
+                        labels: [
+
+                            "Pending",
+
+                            "Accepted",
+
+                            "In Progress",
+
+                            "Completed",
+
+                            "Rejected",
+
+                            "Cancelled"
+
+                        ],
+
+                        datasets: [{
+
+                            data: [
+
+                                requestData.pending,
+
+                                requestData.accepted,
+
+                                requestData.in_progress,
+
+                                requestData.completed,
+
+                                requestData.rejected,
+
+                                requestData.cancelled
+
+                            ]
+
+                        }]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        plugins: {
+
+                            legend: {
+
+                                position: "bottom"
+
+                            },
+
+                            title: {
+
+                                display: true,
+
+                                text:
+                                    "Assistance Request Status"
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+
+        /* =================================================
+           USER CHART
+        ================================================= */
+
+        userChart =
+            new Chart(
+
+                document.getElementById(
+                    "userChart"
+                ),
+
+                {
+
+                    type: "bar",
+
+                    data: {
+
+                        labels: [
+
+                            "Customers",
+
+                            "Providers"
+
+                        ],
+
+                        datasets: [{
+
+                            label:
+                                "Registered Users",
+
+                            data: [
+
+                                data.users.customers,
+
+                                data.users.providers
+
+                            ]
+
+                        }]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        scales: {
+
+                            y: {
+
+                                beginAtZero: true,
+
+                                ticks: {
+
+                                    precision: 0
+
+                                }
+
+                            }
+
+                        },
+
+                        plugins: {
+
+                            legend: {
+
+                                display: false
+
+                            },
+
+                            title: {
+
+                                display: true,
+
+                                text:
+                                    "Customer vs Provider"
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+    }
+
+
+    catch(error) {
+
+        console.error(
+            "Chart error:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   RELOAD CHARTS
+========================================================= */
+
+function reloadCharts() {
+
+    loadCharts();
+
+}
+
+
+/* =========================================================
+   FORMAT STATUS
+========================================================= */
+
+function formatStatus(status) {
+
+    return String(status)
+        .replaceAll("_", " ")
+        .toLowerCase()
+        .replace(
+            /\b\w/g,
+            function(letter) {
+
+                return letter.toUpperCase();
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(value) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+    div.textContent =
+        value ?? "";
+
+    return div.innerHTML;
+
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+async function logout() {
+
+    try {
+
+        await fetch(
+
+            "/auth/logout",
+
+            {
+
+                method: "POST"
+
+            }
+
+        );
+
+    }
+
+    finally {
+
+        window.location.href =
+            "/auth/login-page";
+
+    }
+
+}
+
+
+/* =========================================================
+   INITIAL LOAD
+========================================================= */
+
+loadRequests();
+
+loadUsers();
+
+loadProviders();
+
+loadCharts();
+
+
+</script>
+
+
+</body>
+
+</html>

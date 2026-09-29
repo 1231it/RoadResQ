@@ -1,0 +1,1765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Request Help - RoadResQ</title>
+
+    <!-- Leaflet CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .navbar {
+            background: #111827;
+            color: white;
+            padding: 16px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-right button {
+            background: #ef4444;
+            border: none;
+            color: white;
+            padding: 9px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .page-title {
+            margin-bottom: 20px;
+        }
+
+        .page-title h1 {
+            margin-bottom: 5px;
+        }
+
+        .page-title p {
+            color: #6b7280;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 22px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            margin-bottom: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .location-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .primary-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .primary-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .secondary-btn {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .success-message {
+            color: #15803d;
+            font-weight: bold;
+        }
+
+        .error-message {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        #map {
+            width: 100%;
+            height: 380px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .provider-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 18px;
+        }
+
+        .provider-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 18px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .provider-card:hover {
+            border-color: #2563eb;
+        }
+
+        .provider-card.selected {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .provider-card h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .provider-info {
+            margin: 7px 0;
+            color: #4b5563;
+        }
+
+        .provider-distance {
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .provider-price {
+            font-weight: bold;
+            color: #15803d;
+        }
+
+        .request-btn {
+            width: 100%;
+            margin-top: 12px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .tracking-box {
+            border-left: 5px solid #2563eb;
+            background: #f8fafc;
+            padding: 18px;
+            border-radius: 8px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 7px 13px;
+            border-radius: 20px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-weight: bold;
+        }
+
+        .tracking-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 18px;
+        }
+
+        .info-box {
+            background: white;
+            border: 1px solid #e5e7eb;
+            padding: 14px;
+            border-radius: 8px;
+        }
+
+        .info-label {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-weight: bold;
+        }
+
+        .rating-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+        }
+
+        .star-container {
+            display: flex;
+            gap: 6px;
+            margin: 12px 0;
+        }
+
+        .star-btn {
+            border: none;
+            background: transparent;
+            font-size: 32px;
+            cursor: pointer;
+            color: #d1d5db;
+        }
+
+        .star-btn.active {
+            color: #f59e0b;
+        }
+
+        .rating-submit-btn {
+            margin-top: 12px;
+        }
+
+        .already-rated {
+            background: #f0fdf4;
+            color: #15803d;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .route-note {
+            margin-top: 10px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        @media (max-width: 700px) {
+            .navbar {
+                padding: 14px 18px;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            #map {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="logo">🚨 RoadResQ</div>
+
+    <div class="nav-right">
+        <span id="welcomeText">Customer</span>
+        <button onclick="logout()">Logout</button>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="page-title">
+        <h1>Request Local Assistance</h1>
+        <p>Tell us what help you need. We will find nearby available providers.</p>
+    </div>
+
+
+    <!-- REQUEST FORM -->
+    <div class="card">
+        <h2>🆘 What Help Do You Need?</h2>
+
+        <div class="form-group">
+            <label for="serviceSelect">Select Service</label>
+
+            <select id="serviceSelect">
+                <option value="">-- Select a Service --</option>
+
+                {% for category in categories %}
+                    <optgroup label="{{ category.name }}">
+
+                        {% for service in category.services %}
+
+                            {% if service.is_active %}
+                                <option
+                                    value="{{ service.id }}"
+                                    data-service-name="{{ service.name }}"
+                                >
+                                    {{ service.name }}
+                                </option>
+                            {% endif %}
+
+                        {% endfor %}
+
+                    </optgroup>
+                {% endfor %}
+
+            </select>
+        </div>
+
+
+        <div class="form-group">
+            <label for="description">Describe Your Problem</label>
+
+            <textarea
+                id="description"
+                placeholder="Example: My bike has a flat tyre and I am stranded near the highway."
+            ></textarea>
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Your Current Location</label>
+
+            <div class="location-row">
+
+                <button
+                    type="button"
+                    class="primary-btn"
+                    onclick="getLocation()"
+                >
+                    📍 Use My Current Location
+                </button>
+
+                <span id="locationStatus"></span>
+
+            </div>
+
+            <div id="map"></div>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="primary-btn"
+            onclick="findProviders()"
+        >
+            🔎 Find Nearby Providers
+        </button>
+
+        <p id="formMessage"></p>
+
+    </div>
+
+
+    <!-- PROVIDERS -->
+    <div
+        class="card hidden"
+        id="providersSection"
+    >
+
+        <h2>📍 Nearby Available Providers</h2>
+
+        <p>
+            Select a provider who can come to your current location.
+        </p>
+
+        <div
+            id="providerList"
+            class="provider-grid"
+        ></div>
+
+    </div>
+
+
+    <!-- REQUEST CONFIRMATION -->
+    <div
+        class="card hidden"
+        id="confirmationSection"
+    >
+
+        <h2>✅ Confirm Assistance Request</h2>
+
+        <div class="tracking-box">
+
+            <p>
+                <strong>Service:</strong>
+                <span id="confirmService"></span>
+            </p>
+
+            <p>
+                <strong>Provider:</strong>
+                <span id="confirmProvider"></span>
+            </p>
+
+            <p>
+                <strong>Distance:</strong>
+                <span id="confirmDistance"></span>
+            </p>
+
+            <p>
+                <strong>Estimated Price:</strong>
+                <span id="confirmPrice"></span>
+            </p>
+
+            <p>
+                <strong>Estimated Arrival:</strong>
+                <span id="confirmEta"></span>
+            </p>
+
+            <button
+                class="primary-btn"
+                onclick="createRequest()"
+            >
+                🚨 Send Assistance Request
+            </button>
+
+            <button
+                class="secondary-btn"
+                onclick="cancelSelection()"
+                style="margin-left:8px;"
+            >
+                Cancel
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- TRACKING -->
+    <div
+        class="card hidden"
+        id="trackingSection"
+    >
+
+        <h2>📡 Request Tracking</h2>
+
+        <div class="tracking-box">
+
+            <p>
+                <strong>Request ID:</strong>
+                #<span id="trackingRequestId"></span>
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+                <span
+                    class="status"
+                    id="trackingStatus"
+                >
+                    PENDING
+                </span>
+            </p>
+
+            <div class="tracking-info">
+
+                <div class="info-box">
+                    <div class="info-label">Service</div>
+                    <div
+                        class="info-value"
+                        id="trackingService"
+                    >
+                        -
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-label">Provider</div>
+                    <div
+                        class="info-value"
+                        id="trackingProvider"
+                    >
+                        Waiting...
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-label">Distance</div>
+                    <div
+                        class="info-value"
+                        id="trackingDistance"
+                    >
+                        -
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-label">Estimated Arrival</div>
+                    <div
+                        class="info-value"
+                        id="trackingEta"
+                    >
+                        -
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-label">Estimated Price</div>
+                    <div
+                        class="info-value"
+                        id="trackingPrice"
+                    >
+                        -
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div
+                id="trackingMap"
+                style="
+                    width:100%;
+                    height:350px;
+                    margin-top:20px;
+                    border-radius:10px;
+                "
+            ></div>
+
+            <p class="route-note">
+                The map shows your location and the provider's location.
+            </p>
+
+
+            <!-- RATING -->
+            <div
+                id="ratingSection"
+                class="rating-section hidden"
+            ></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Leaflet JS -->
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+
+<script>
+
+    let userLatitude = null;
+    let userLongitude = null;
+
+    let selectedProvider = null;
+    let currentRequestId = null;
+
+    let map = null;
+    let userMarker = null;
+
+    let trackingMap = null;
+    let trackingUserMarker = null;
+    let trackingProviderMarker = null;
+    let trackingRouteLine = null;
+
+    let trackingInterval = null;
+
+    let selectedRating = 0;
+
+
+    // --------------------------------------------------
+    // INITIAL MAP
+    // --------------------------------------------------
+
+    function initializeMap() {
+
+        map = L.map("map").setView(
+            [16.5449, 81.5212],
+            13
+        );
+
+        L.tileLayer(
+            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {
+                attribution: "&copy; OpenStreetMap contributors"
+            }
+        ).addTo(map);
+    }
+
+
+    // --------------------------------------------------
+    // CURRENT LOCATION
+    // --------------------------------------------------
+
+    function getLocation() {
+
+        const statusElement =
+            document.getElementById("locationStatus");
+
+        if (!navigator.geolocation) {
+
+            statusElement.innerHTML =
+                '<span class="error-message">Geolocation is not supported.</span>';
+
+            return;
+        }
+
+        statusElement.innerHTML =
+            "Getting your location...";
+
+
+        navigator.geolocation.getCurrentPosition(
+
+            function(position) {
+
+                userLatitude =
+                    position.coords.latitude;
+
+                userLongitude =
+                    position.coords.longitude;
+
+
+                statusElement.innerHTML =
+                    '<span class="success-message">✓ Location detected</span>';
+
+
+                if (userMarker) {
+                    map.removeLayer(userMarker);
+                }
+
+
+                userMarker = L.marker([
+                    userLatitude,
+                    userLongitude
+                ])
+                .addTo(map)
+                .bindPopup("📍 Your Current Location")
+                .openPopup();
+
+
+                map.setView(
+                    [userLatitude, userLongitude],
+                    15
+                );
+
+            },
+
+            function(error) {
+
+                statusElement.innerHTML =
+                    '<span class="error-message">Unable to get location. Please allow location access.</span>';
+
+            },
+
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            }
+        );
+    }
+
+
+    // --------------------------------------------------
+    // FIND NEARBY PROVIDERS
+    // --------------------------------------------------
+
+    async function findProviders() {
+
+        const serviceSelect =
+            document.getElementById("serviceSelect");
+
+        const serviceId =
+            serviceSelect.value;
+
+        const description =
+            document.getElementById("description").value.trim();
+
+        const messageElement =
+            document.getElementById("formMessage");
+
+
+        if (!serviceId) {
+
+            messageElement.innerHTML =
+                '<span class="error-message">Please select a service.</span>';
+
+            return;
+        }
+
+
+        if (!description) {
+
+            messageElement.innerHTML =
+                '<span class="error-message">Please describe your problem.</span>';
+
+            return;
+        }
+
+
+        if (
+            userLatitude === null ||
+            userLongitude === null
+        ) {
+
+            messageElement.innerHTML =
+                '<span class="error-message">Please get your current location first.</span>';
+
+            return;
+        }
+
+
+        messageElement.innerHTML =
+            "Finding nearby available providers...";
+
+
+        try {
+
+            const response = await fetch(
+                `/customer/nearby-providers?service_id=${serviceId}&latitude=${userLatitude}&longitude=${userLongitude}`
+            );
+
+
+            const data = await response.json();
+
+
+            if (!response.ok) {
+
+                messageElement.innerHTML =
+                    `<span class="error-message">${data.message || "Unable to find providers."}</span>`;
+
+                return;
+            }
+
+
+            displayProviders(data.providers);
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            messageElement.innerHTML =
+                '<span class="error-message">Something went wrong while finding providers.</span>';
+        }
+    }
+
+
+    // --------------------------------------------------
+    // DISPLAY PROVIDERS
+    // --------------------------------------------------
+
+    function displayProviders(providers) {
+
+        const section =
+            document.getElementById("providersSection");
+
+        const list =
+            document.getElementById("providerList");
+
+        const messageElement =
+            document.getElementById("formMessage");
+
+
+        list.innerHTML = "";
+
+
+        if (!providers || providers.length === 0) {
+
+            section.classList.remove("hidden");
+
+            list.innerHTML = `
+                <div>
+                    <p class="error-message">
+                        No available providers were found nearby.
+                    </p>
+
+                    <p>
+                        Try another service or check again later.
+                    </p>
+                </div>
+            `;
+
+            messageElement.innerHTML = "";
+
+            return;
+        }
+
+
+        providers.forEach(provider => {
+
+            const card =
+                document.createElement("div");
+
+            card.className = "provider-card";
+
+
+            card.innerHTML = `
+
+                <h3>👤 ${escapeHtml(provider.name)}</h3>
+
+                <div class="provider-info">
+                    📞 ${escapeHtml(provider.phone || "Not available")}
+                </div>
+
+                <div class="provider-info">
+                    ⭐ Rating:
+                    <strong>${provider.rating ?? "New"}</strong>
+                </div>
+
+                <div class="provider-info provider-distance">
+                    📍 ${provider.distance_km} km away
+                </div>
+
+                <div class="provider-info">
+                    ⏱️ Estimated arrival:
+                    ${provider.eta_minutes} minutes
+                </div>
+
+                <div class="provider-info provider-price">
+                    💰 Estimated price:
+                    ₹${provider.estimated_price}
+                </div>
+
+                <button
+                    class="primary-btn request-btn"
+                    onclick="selectProvider(${provider.id})"
+                >
+                    Select Provider
+                </button>
+
+            `;
+
+
+            list.appendChild(card);
+
+        });
+
+
+        section.classList.remove("hidden");
+
+        messageElement.innerHTML =
+            '<span class="success-message">Nearby providers found.</span>';
+
+    }
+
+
+    // --------------------------------------------------
+    // SELECT PROVIDER
+    // --------------------------------------------------
+
+    async function selectProvider(providerId) {
+
+        const serviceSelect =
+            document.getElementById("serviceSelect");
+
+        const serviceName =
+            serviceSelect.options[
+                serviceSelect.selectedIndex
+            ].dataset.serviceName;
+
+
+        try {
+
+            const response = await fetch(
+                `/customer/nearby-providers?service_id=${serviceSelect.value}&latitude=${userLatitude}&longitude=${userLongitude}`
+            );
+
+
+            const data = await response.json();
+
+
+            if (!response.ok) {
+                return;
+            }
+
+
+            selectedProvider =
+                data.providers.find(
+                    provider =>
+                        provider.id === providerId
+                );
+
+
+            if (!selectedProvider) {
+                return;
+            }
+
+
+            document.getElementById("confirmService")
+                .textContent = serviceName;
+
+            document.getElementById("confirmProvider")
+                .textContent = selectedProvider.name;
+
+            document.getElementById("confirmDistance")
+                .textContent =
+                `${selectedProvider.distance_km} km`;
+
+            document.getElementById("confirmPrice")
+                .textContent =
+                `₹${selectedProvider.estimated_price}`;
+
+            document.getElementById("confirmEta")
+                .textContent =
+                `${selectedProvider.eta_minutes} minutes`;
+
+
+            document
+                .getElementById("confirmationSection")
+                .classList.remove("hidden");
+
+
+            document
+                .getElementById("confirmationSection")
+                .scrollIntoView({
+                    behavior: "smooth"
+                });
+
+
+        } catch (error) {
+
+            console.error(error);
+
+        }
+    }
+
+
+    // --------------------------------------------------
+    // CANCEL PROVIDER SELECTION
+    // --------------------------------------------------
+
+    function cancelSelection() {
+
+        selectedProvider = null;
+
+        document
+            .getElementById("confirmationSection")
+            .classList.add("hidden");
+    }
+
+
+    // --------------------------------------------------
+    // CREATE REQUEST
+    // --------------------------------------------------
+
+    async function createRequest() {
+
+        const serviceSelect =
+            document.getElementById("serviceSelect");
+
+        const serviceId =
+            serviceSelect.value;
+
+        const description =
+            document.getElementById("description").value.trim();
+
+
+        if (!selectedProvider) {
+
+            alert("Please select a provider.");
+
+            return;
+        }
+
+
+        try {
+
+            const response = await fetch(
+                "/customer/create-request",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        service_id:
+                            Number(serviceId),
+
+                        provider_id:
+                            Number(selectedProvider.id),
+
+                        description:
+                            description,
+
+                        latitude:
+                            userLatitude,
+
+                        longitude:
+                            userLongitude
+
+                    })
+                }
+            );
+
+
+            const data = await response.json();
+
+
+            if (!response.ok) {
+
+                alert(
+                    data.message ||
+                    "Unable to create request."
+                );
+
+                return;
+            }
+
+
+            currentRequestId =
+                data.request_id;
+
+
+            document
+                .getElementById("confirmationSection")
+                .classList.add("hidden");
+
+
+            document
+                .getElementById("providersSection")
+                .classList.add("hidden");
+
+
+            document
+                .getElementById("trackingSection")
+                .classList.remove("hidden");
+
+
+            document.getElementById(
+                "trackingRequestId"
+            ).textContent = currentRequestId;
+
+
+            document
+                .getElementById("trackingSection")
+                .scrollIntoView({
+                    behavior: "smooth"
+                });
+
+
+            startTracking();
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Something went wrong while creating the request."
+            );
+        }
+    }
+
+
+    // --------------------------------------------------
+    // REQUEST TRACKING
+    // --------------------------------------------------
+
+    function startTracking() {
+
+        if (trackingInterval) {
+            clearInterval(trackingInterval);
+        }
+
+
+        loadTrackingData();
+
+
+        trackingInterval =
+            setInterval(
+                loadTrackingData,
+                5000
+            );
+    }
+
+
+    async function loadTrackingData() {
+
+        if (!currentRequestId) {
+            return;
+        }
+
+
+        try {
+
+            const response = await fetch(
+                `/customer/request/${currentRequestId}/tracking`
+            );
+
+
+            const data = await response.json();
+
+
+            if (!response.ok) {
+
+                console.error(
+                    data.message ||
+                    "Tracking error"
+                );
+
+                return;
+            }
+
+
+            displayTrackingData(data);
+
+
+        } catch (error) {
+
+            console.error(
+                "Tracking error:",
+                error
+            );
+        }
+    }
+
+
+    // --------------------------------------------------
+    // DISPLAY TRACKING DATA
+    // --------------------------------------------------
+
+    function displayTrackingData(data) {
+
+        document.getElementById(
+            "trackingStatus"
+        ).textContent =
+            data.status || "PENDING";
+
+
+        document.getElementById(
+            "trackingService"
+        ).textContent =
+            data.service?.name || "-";
+
+
+        document.getElementById(
+            "trackingProvider"
+        ).textContent =
+            data.provider?.name ||
+            "Waiting for provider";
+
+
+        document.getElementById(
+            "trackingDistance"
+        ).textContent =
+            data.distance_km !== undefined &&
+            data.distance_km !== null
+                ? `${data.distance_km} km`
+                : "-";
+
+
+        document.getElementById(
+            "trackingEta"
+        ).textContent =
+            data.eta_minutes !== undefined &&
+            data.eta_minutes !== null
+                ? `${data.eta_minutes} minutes`
+                : "-";
+
+
+        document.getElementById(
+            "trackingPrice"
+        ).textContent =
+            data.estimated_price !== undefined &&
+            data.estimated_price !== null
+                ? `₹${data.estimated_price}`
+                : "-";
+
+
+        displayTrackingMap(data);
+
+
+        if (data.status === "COMPLETED") {
+
+            showRatingSection(
+                data.rating || {
+                    submitted: false
+                }
+            );
+
+            if (trackingInterval) {
+
+                clearInterval(
+                    trackingInterval
+                );
+
+                trackingInterval = null;
+            }
+
+        } else {
+
+            document
+                .getElementById("ratingSection")
+                .classList.add("hidden");
+        }
+    }
+
+
+    // --------------------------------------------------
+    // TRACKING MAP
+    // --------------------------------------------------
+
+    function displayTrackingMap(data) {
+
+        const customerLat =
+            data.latitude ??
+            data.customer?.latitude;
+
+        const customerLng =
+            data.longitude ??
+            data.customer?.longitude;
+
+
+        const providerLat =
+            data.provider?.latitude;
+
+        const providerLng =
+            data.provider?.longitude;
+
+
+        if (
+            customerLat === null ||
+            customerLat === undefined ||
+            customerLng === null ||
+            customerLng === undefined
+        ) {
+            return;
+        }
+
+
+        if (!trackingMap) {
+
+            trackingMap = L.map(
+                "trackingMap"
+            ).setView(
+                [customerLat, customerLng],
+                14
+            );
+
+
+            L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+                    attribution:
+                        "&copy; OpenStreetMap contributors"
+                }
+            ).addTo(trackingMap);
+        }
+
+
+        if (trackingUserMarker) {
+
+            trackingMap.removeLayer(
+                trackingUserMarker
+            );
+        }
+
+
+        trackingUserMarker =
+            L.marker([
+                customerLat,
+                customerLng
+            ])
+            .addTo(trackingMap)
+            .bindPopup(
+                "📍 Your Location"
+            );
+
+
+        if (
+            providerLat !== null &&
+            providerLat !== undefined &&
+            providerLng !== null &&
+            providerLng !== undefined
+        ) {
+
+            if (trackingProviderMarker) {
+
+                trackingMap.removeLayer(
+                    trackingProviderMarker
+                );
+            }
+
+
+            trackingProviderMarker =
+                L.marker([
+                    providerLat,
+                    providerLng
+                ])
+                .addTo(trackingMap)
+                .bindPopup(
+                    `🚗 ${data.provider.name || "Provider"}`
+                );
+
+
+            if (trackingRouteLine) {
+
+                trackingMap.removeLayer(
+                    trackingRouteLine
+                );
+            }
+
+
+            trackingRouteLine =
+                L.polyline(
+                    [
+                        [
+                            customerLat,
+                            customerLng
+                        ],
+                        [
+                            providerLat,
+                            providerLng
+                        ]
+                    ],
+                    {
+                        dashArray: "8, 8"
+                    }
+                ).addTo(trackingMap);
+
+
+            const bounds =
+                L.latLngBounds([
+                    [
+                        customerLat,
+                        customerLng
+                    ],
+                    [
+                        providerLat,
+                        providerLng
+                    ]
+                ]);
+
+
+            trackingMap.fitBounds(
+                bounds,
+                {
+                    padding: [30, 30]
+                }
+            );
+
+        } else {
+
+            trackingMap.setView(
+                [
+                    customerLat,
+                    customerLng
+                ],
+                14
+            );
+        }
+    }
+
+
+    // --------------------------------------------------
+    // RATING
+    // --------------------------------------------------
+
+    function showRatingSection(ratingData) {
+
+        const section =
+            document.getElementById(
+                "ratingSection"
+            );
+
+
+        section.classList.remove(
+            "hidden"
+        );
+
+
+        if (ratingData.submitted) {
+
+            section.innerHTML = `
+
+                <h3>⭐ Your Rating</h3>
+
+                <div class="already-rated">
+
+                    You already rated this provider
+                    <br><br>
+
+                    ⭐ ${ratingData.rating}/5
+
+                    ${
+                        ratingData.review
+                            ? `<br><br>💬 ${escapeHtml(ratingData.review)}`
+                            : ""
+                    }
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+        selectedRating = 0;
+
+
+        section.innerHTML = `
+
+            <h3>⭐ Rate Your Experience</h3>
+
+            <p>
+                How was the assistance provided?
+            </p>
+
+            <div
+                class="star-container"
+                id="starContainer"
+            >
+
+                ${[1, 2, 3, 4, 5]
+                    .map(
+                        number => `
+                            <button
+                                type="button"
+                                class="star-btn"
+                                data-rating="${number}"
+                                onclick="selectRating(${number})"
+                            >
+                                ★
+                            </button>
+                        `
+                    )
+                    .join("")
+                }
+
+            </div>
+
+
+            <textarea
+                id="ratingReview"
+                placeholder="Write a short review (optional)"
+            ></textarea>
+
+
+            <button
+                class="primary-btn rating-submit-btn"
+                onclick="submitRating()"
+            >
+                Submit Rating
+            </button>
+
+            <p id="ratingMessage"></p>
+        `;
+    }
+
+
+    function selectRating(rating) {
+
+        selectedRating = rating;
+
+
+        const stars =
+            document.querySelectorAll(
+                ".star-btn"
+            );
+
+
+        stars.forEach(star => {
+
+            const value =
+                Number(
+                    star.dataset.rating
+                );
+
+
+            if (value <= rating) {
+
+                star.classList.add(
+                    "active"
+                );
+
+            } else {
+
+                star.classList.remove(
+                    "active"
+                );
+            }
+
+        });
+    }
+
+
+    async function submitRating() {
+
+        if (selectedRating < 1) {
+
+            alert(
+                "Please select a rating from 1 to 5."
+            );
+
+            return;
+        }
+
+
+        const review =
+            document.getElementById(
+                "ratingReview"
+            ).value.trim();
+
+
+        const messageElement =
+            document.getElementById(
+                "ratingMessage"
+            );
+
+
+        try {
+
+            const response = await fetch(
+                `/customer/request/${currentRequestId}/rating`,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        rating:
+                            selectedRating,
+
+                        review:
+                            review
+
+                    })
+                }
+            );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                messageElement.innerHTML =
+                    `<span class="error-message">${data.message || "Unable to submit rating."}</span>`;
+
+                return;
+            }
+
+
+            messageElement.innerHTML =
+                '<span class="success-message">✓ Rating submitted successfully!</span>';
+
+
+            setTimeout(() => {
+
+                showRatingSection({
+                    submitted: true,
+                    rating:
+                        selectedRating,
+                    review:
+                        review
+                });
+
+            }, 700);
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            messageElement.innerHTML =
+                '<span class="error-message">Something went wrong while submitting your rating.</span>';
+        }
+    }
+
+
+    // --------------------------------------------------
+    // AUTO-SELECT SERVICE FROM SMART ASSISTANT
+    // --------------------------------------------------
+
+    function selectServiceFromUrl() {
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        const requestedService =
+            params.get("service");
+
+
+        if (!requestedService) {
+            return;
+        }
+
+
+        const serviceSelect =
+            document.getElementById(
+                "serviceSelect"
+            );
+
+
+        const options =
+            serviceSelect.querySelectorAll(
+                "option"
+            );
+
+
+        let found = false;
+
+
+        options.forEach(option => {
+
+            const serviceName =
+                option.dataset.serviceName;
+
+
+            if (
+                serviceName &&
+                serviceName.toLowerCase() ===
+                requestedService.toLowerCase()
+            ) {
+
+                option.selected = true;
+
+                found = true;
+            }
+        });
+
+
+        if (found) {
+
+            document.getElementById(
+                "formMessage"
+            ).innerHTML = `
+
+                <span class="success-message">
+                    ✓ ${escapeHtml(requestedService)} selected from Smart Help Assistant.
+                </span>
+
+            `;
+        }
+    }
+
+
+    // --------------------------------------------------
+    // LOGOUT
+    // --------------------------------------------------
+
+    async function logout() {
+
+        try {
+
+            await fetch(
+                "/auth/logout",
+                {
+                    method: "POST"
+                }
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+        }
+
+
+        window.location.href =
+            "/auth/login-page";
+    }
+
+
+    // --------------------------------------------------
+    // HTML ESCAPE
+    // --------------------------------------------------
+
+    function escapeHtml(value) {
+
+        if (value === null ||
+            value === undefined) {
+
+            return "";
+        }
+
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    // --------------------------------------------------
+    // PAGE LOAD
+    // --------------------------------------------------
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            initializeMap();
+
+            selectServiceFromUrl();
+
+        }
+    );
+
+</script>
+
+</body>
+</html>

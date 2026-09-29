@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RoadResQ - Create Account</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            min-height: 100vh;
+            padding: 40px 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.10);
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 28px;
+        }
+
+        .section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 14px;
+        }
+
+        .roles {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .role-option {
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .role-option.selected {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .role-option input {
+            display: none;
+        }
+
+        .role-icon {
+            display: block;
+            font-size: 25px;
+            margin-bottom: 5px;
+        }
+
+        label.field-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 18px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .provider-section {
+            display: none;
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 10px;
+        }
+
+        .service-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .service-item {
+            background: white;
+            border: 1px solid #e5e7eb;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .service-item input {
+            margin-right: 7px;
+        }
+
+        .category-name {
+            font-weight: bold;
+            margin: 15px 0 10px;
+        }
+
+        .create-btn {
+            width: 100%;
+            padding: 13px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .create-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 22px;
+            color: #6b7280;
+        }
+
+        .login-link a {
+            color: #2563eb;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        #message {
+            margin-top: 18px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+
+            .service-list {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">
+        🚨 RoadResQ
+    </div>
+
+    <p class="subtitle">
+        Create your RoadResQ account
+    </p>
+
+
+    <form id="registerForm">
+
+
+        <div class="section">
+
+            <div class="section-title">
+                I want to register as
+            </div>
+
+
+            <div class="roles">
+
+                <label
+                    class="role-option selected"
+                    id="customerRole"
+                >
+
+                    <input
+                        type="radio"
+                        name="role"
+                        value="customer"
+                        checked
+                    >
+
+                    <span class="role-icon">
+                        👤
+                    </span>
+
+                    Customer
+
+                </label>
+
+
+                <label
+                    class="role-option"
+                    id="providerRole"
+                >
+
+                    <input
+                        type="radio"
+                        name="role"
+                        value="provider"
+                    >
+
+                    <span class="role-icon">
+                        🛠️
+                    </span>
+
+                    Service Provider
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <label class="field-label">
+            Full Name
+        </label>
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Enter your full name"
+            required
+        >
+
+
+        <label class="field-label">
+            Email
+        </label>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            required
+        >
+
+
+        <label class="field-label">
+            Password
+        </label>
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Create a password"
+            required
+        >
+
+
+        <label class="field-label">
+            Confirm Password
+        </label>
+
+        <input
+            type="password"
+            id="confirmPassword"
+            placeholder="Confirm your password"
+            required
+        >
+
+
+        <div
+            class="provider-section"
+            id="providerSection"
+        >
+
+            <div class="section-title">
+                Provider Information
+            </div>
+
+
+            <label class="field-label">
+                Phone Number
+            </label>
+
+            <input
+                type="tel"
+                id="phone"
+                placeholder="Enter your phone number"
+            >
+
+
+            <div class="section-title">
+                Services You Provide
+            </div>
+
+
+            <div id="servicesContainer">
+
+                {% for category in categories %}
+
+                    <div class="category-name">
+                        {{ category.name }}
+                    </div>
+
+                    <div class="service-list">
+
+                        {% for service in category.services %}
+
+                            {% if service.is_active %}
+
+                                <label class="service-item">
+
+                                    <input
+                                        type="checkbox"
+                                        name="services"
+                                        value="{{ service.id }}"
+                                    >
+
+                                    {{ service.name }}
+
+                                </label>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="create-btn"
+        >
+            Create Account
+        </button>
+
+
+        <div id="message"></div>
+
+    </form>
+
+
+    <div class="login-link">
+
+        Already have an account?
+
+        <a href="/auth/login-page">
+            Login
+        </a>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    const roleOptions =
+        document.querySelectorAll(".role-option");
+
+    const providerSection =
+        document.getElementById("providerSection");
+
+
+    roleOptions.forEach(function(option) {
+
+        option.addEventListener("click", function() {
+
+            roleOptions.forEach(function(item) {
+
+                item.classList.remove("selected");
+
+            });
+
+            option.classList.add("selected");
+
+            option.querySelector("input").checked = true;
+
+
+            const role =
+                option.querySelector("input").value;
+
+
+            if (role === "provider") {
+
+                providerSection.style.display = "block";
+
+            } else {
+
+                providerSection.style.display = "none";
+
+            }
+
+        });
+
+    });
+
+
+    document
+        .getElementById("registerForm")
+        .addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+
+            const name =
+                document.getElementById("name").value.trim();
+
+            const email =
+                document.getElementById("email").value.trim();
+
+            const password =
+                document.getElementById("password").value;
+
+            const confirmPassword =
+                document.getElementById("confirmPassword").value;
+
+            const role =
+                document.querySelector(
+                    'input[name="role"]:checked'
+                ).value;
+
+            const message =
+                document.getElementById("message");
+
+
+            if (password !== confirmPassword) {
+
+                message.style.color = "red";
+
+                message.textContent =
+                    "Passwords do not match.";
+
+                return;
+            }
+
+
+            let phone = "";
+
+            let serviceIds = [];
+
+
+            if (role === "provider") {
+
+                phone =
+                    document.getElementById("phone").value.trim();
+
+
+                serviceIds =
+                    Array.from(
+                        document.querySelectorAll(
+                            'input[name="services"]:checked'
+                        )
+                    ).map(function(item) {
+
+                        return Number(item.value);
+
+                    });
+
+
+                if (!phone) {
+
+                    message.style.color = "red";
+
+                    message.textContent =
+                        "Phone number is required for providers.";
+
+                    return;
+                }
+
+
+                if (serviceIds.length === 0) {
+
+                    message.style.color = "red";
+
+                    message.textContent =
+                        "Select at least one service.";
+
+                    return;
+                }
+
+            }
+
+
+            try {
+
+                const response =
+                    await fetch("/auth/register", {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+
+                            name: name,
+
+                            email: email,
+
+                            password: password,
+
+                            role: role,
+
+                            phone: phone,
+
+                            service_ids: serviceIds
+
+                        })
+
+                    });
+
+
+                const data =
+                    await response.json();
+
+
+                if (response.ok) {
+
+                    message.style.color = "green";
+
+                    message.textContent =
+                        "Account created successfully! Redirecting to login...";
+
+
+                    setTimeout(function() {
+
+                        window.location.href =
+                            "/auth/login-page?registered=1";
+
+                    }, 1000);
+
+                } else {
+
+                    message.style.color = "red";
+
+                    message.textContent =
+                        data.message ||
+                        "Registration failed.";
+
+                }
+
+            } catch (error) {
+
+                message.style.color = "red";
+
+                message.textContent =
+                    "Something went wrong.";
+
+            }
+
+        });
+
+</script>
+
+</body>
+
+</html>

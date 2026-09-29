@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>RoadResQ - Smart Help Assistant</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .navbar {
+            background: #172554;
+            color: white;
+            padding: 18px 7%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            background: white;
+            color: #172554;
+            border: none;
+            padding: 9px 15px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 850px;
+            margin: 45px auto;
+        }
+
+        .hero {
+            text-align: center;
+        }
+
+        .hero-icon {
+            font-size: 55px;
+        }
+
+        .hero h1 {
+            color: #172554;
+            margin-bottom: 8px;
+        }
+
+        .hero p {
+            color: #64748b;
+        }
+
+        .card {
+            background: white;
+            margin-top: 30px;
+            padding: 30px;
+            border-radius: 16px;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #172554;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+
+            padding: 15px;
+
+            border: 1px solid #cbd5e1;
+
+            border-radius: 10px;
+
+            resize: vertical;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: #2563eb;
+        }
+
+        .examples {
+            margin-top: 15px;
+        }
+
+        .example-btn {
+            background: #eff6ff;
+            color: #1d4ed8;
+
+            border: 1px solid #bfdbfe;
+
+            padding: 8px 12px;
+
+            border-radius: 20px;
+
+            margin: 5px 5px 5px 0;
+
+            cursor: pointer;
+        }
+
+        .example-btn:hover {
+            background: #dbeafe;
+        }
+
+        .recommend-btn {
+            width: 100%;
+
+            margin-top: 20px;
+
+            background: #2563eb;
+
+            color: white;
+
+            border: none;
+
+            padding: 13px;
+
+            border-radius: 9px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .recommend-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .recommend-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .result {
+            display: none;
+
+            margin-top: 25px;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            background: #f8fafc;
+
+            border: 1px solid #e2e8f0;
+        }
+
+        .result-icon {
+            font-size: 45px;
+        }
+
+        .result h2 {
+            color: #172554;
+            margin-bottom: 5px;
+        }
+
+        .service {
+            font-size: 21px;
+            font-weight: bold;
+            color: #2563eb;
+            margin: 10px 0;
+        }
+
+        .category {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .message {
+            margin-top: 15px;
+            line-height: 1.6;
+        }
+
+        .request-btn {
+            margin-top: 20px;
+
+            background: #16a34a;
+
+            color: white;
+
+            border: none;
+
+            padding: 12px 18px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+        .request-btn:hover {
+            background: #15803d;
+        }
+
+        .error {
+            display: none;
+
+            margin-top: 15px;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            background: #fee2e2;
+
+            color: #991b1b;
+        }
+
+        .loading {
+            display: none;
+
+            text-align: center;
+
+            margin-top: 15px;
+
+            color: #64748b;
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 15px 5%;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .container {
+                width: 92%;
+                margin: 30px auto;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<nav class="navbar">
+
+    <div class="logo">
+        🤖 RoadResQ Smart Help
+    </div>
+
+    <button
+        class="back-btn"
+        onclick="goBack()">
+
+        ← Dashboard
+
+    </button>
+
+</nav>
+
+
+<div class="container">
+
+
+    <div class="hero">
+
+        <div class="hero-icon">
+            🤖
+        </div>
+
+        <h1>
+            Smart Help Assistant
+        </h1>
+
+        <p>
+            Describe your problem and RoadResQ will recommend
+            the appropriate local assistance.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+
+        <label class="label">
+            What do you need help with?
+        </label>
+
+
+        <textarea
+            id="problem"
+            placeholder="Example: My bike tyre is punctured and I am stranded on the road..."></textarea>
+
+
+        <div class="examples">
+
+            <button
+                class="example-btn"
+                onclick="useExample('My bike tyre is punctured')">
+
+                🛞 Tyre puncture
+
+            </button>
+
+            <button
+                class="example-btn"
+                onclick="useExample('My car has no fuel')">
+
+                ⛽ No fuel
+
+            </button>
+
+            <button
+                class="example-btn"
+                onclick="useExample('My vehicle battery is dead')">
+
+                🔋 Battery problem
+
+            </button>
+
+            <button
+                class="example-btn"
+                onclick="useExample('I need emergency food')">
+
+                🍱 Food
+
+            </button>
+
+            <button
+                class="example-btn"
+                onclick="useExample('I need medicine delivery')">
+
+                💊 Medicine
+
+            </button>
+
+            <button
+                class="example-btn"
+                onclick="useExample('There is a water pipe leak')">
+
+                🚰 Plumbing
+
+            </button>
+
+        </div>
+
+
+        <button
+            id="recommendBtn"
+            class="recommend-btn"
+            onclick="getRecommendation()">
+
+            🔍 Find Suitable Help
+
+        </button>
+
+
+        <div
+            id="loading"
+            class="loading">
+
+            🔄 Analyzing your problem...
+
+        </div>
+
+
+        <div
+            id="error"
+            class="error">
+        </div>
+
+
+        <div
+            id="result"
+            class="result">
+
+
+            <div
+                id="resultIcon"
+                class="result-icon">
+            </div>
+
+
+            <h2>
+                Recommended Assistance
+            </h2>
+
+
+            <div
+                id="category"
+                class="category">
+            </div>
+
+
+            <div
+                id="service"
+                class="service">
+            </div>
+
+
+            <div
+                id="message"
+                class="message">
+            </div>
+
+
+            <button
+                id="requestBtn"
+                class="request-btn"
+                onclick="requestHelp()">
+
+                🚨 Request This Help
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+let selectedService = "";
+
+
+/* =========================================================
+   EXAMPLE
+========================================================= */
+
+function useExample(text) {
+
+    document.getElementById(
+        "problem"
+    ).value = text;
+
+}
+
+
+/* =========================================================
+   GET RECOMMENDATION
+========================================================= */
+
+async function getRecommendation() {
+
+    const problem =
+        document.getElementById(
+            "problem"
+        ).value.trim();
+
+
+    const error =
+        document.getElementById(
+            "error"
+        );
+
+
+    const result =
+        document.getElementById(
+            "result"
+        );
+
+
+    const loading =
+        document.getElementById(
+            "loading"
+        );
+
+
+    const button =
+        document.getElementById(
+            "recommendBtn"
+        );
+
+
+    error.style.display = "none";
+
+    result.style.display = "none";
+
+
+    if (!problem) {
+
+        error.textContent =
+            "Please describe your problem first.";
+
+        error.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    loading.style.display =
+        "block";
+
+    button.disabled = true;
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/assistant/recommend",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        problem: problem
+                    })
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.message ||
+                "Unable to get recommendation."
+            );
+
+        }
+
+
+        selectedService =
+            data.service;
+
+
+        document.getElementById(
+            "resultIcon"
+        ).textContent =
+            data.icon;
+
+
+        document.getElementById(
+            "category"
+        ).textContent =
+            data.category;
+
+
+        document.getElementById(
+            "service"
+        ).textContent =
+            data.service;
+
+
+        document.getElementById(
+            "message"
+        ).textContent =
+            data.message;
+
+
+        result.style.display =
+            "block";
+
+    }
+
+
+    catch(errorObject) {
+
+        error.textContent =
+            errorObject.message;
+
+        error.style.display =
+            "block";
+
+    }
+
+
+    finally {
+
+        loading.style.display =
+            "none";
+
+        button.disabled =
+            false;
+
+    }
+
+}
+
+
+/* =========================================================
+   REQUEST HELP
+========================================================= */
+
+function requestHelp() {
+
+    if (!selectedService) {
+        return;
+    }
+
+
+    window.location.href =
+        "/customer/request-help?service=" +
+        encodeURIComponent(
+            selectedService
+        );
+
+}
+
+
+/* =========================================================
+   BACK
+========================================================= */
+
+function goBack() {
+
+    window.location.href =
+        "/customer/dashboard";
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
